@@ -1,0 +1,61 @@
+'''python'''
+
+class MyClass(object):
+    def __init__(self, value, parent1, parent2, operation):
+        self.value = value
+        self.parent1 = parent1
+        self.parent2 = parent2
+        self.operation = operation
+        self.grad = 0
+        self.grad1 = 1
+        self.grad2 = 1
+            
+    
+    def ComputeGrads(self):
+        if self.operation == "mul":
+            self.grad1 = self.parent2.value
+            self.grad2 = self.parent1.value
+        if self.operation == "sub":
+            self.grad1 = 1
+            self.grad2 = -1
+        if self.operation == "add":
+            self.grad1 = 1
+            self.grad2 = 1
+        if self.operation == "truediv":
+            self.grad1 = 1/self.parent2.value
+            self.grad2 = -1*(self.parent1.value/(self.parent2.value**2))
+            
+        if self.parent1 != None and self.parent2 != None:
+            self.parent1.grad += self.grad1 * self.grad
+            self.parent1.ComputeGrads()
+            self.parent2.grad += self.grad2 * self.grad
+            self.parent2.ComputeGrads()    
+            
+        
+        
+    def __mul__(self, other):
+        value = self.value * other.value
+        return MyClass(value, self, other, "mul")
+
+    def __add__(self, other):
+        value = self.value + other.value
+        return MyClass(value, self, other, "add")
+
+    def __sub__(self, other):
+        value = self.value - other.value
+        return MyClass(value, self, other, "sub")
+
+    def __truediv__(self, other):
+        value = self.value / other.value
+        return MyClass(value, self, other, "truediv")
+
+
+a = MyClass(15, None, None, None)
+b = MyClass(4, None, None, None)
+c = a - b
+d = c*c
+
+
+d.grad = 1
+d.ComputeGrads()
+a.grad
