@@ -1,5 +1,3 @@
-'''python'''
-
 class MyClass(object):
     def __init__(self, value, parent1, parent2, operation):
         self.value = value
