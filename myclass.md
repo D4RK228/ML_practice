@@ -58,7 +58,7 @@ class Dense(object):
     def __call__(self, vector):
         arr = []
         for i in self.weights:
-            s = 0
+            s = MyClass(0, None, None, None)
             for j in range(self.size_in):
                 s += i[j] * vector[j]
             arr.append(s)
@@ -94,15 +94,13 @@ def ComputeTopGrads(dfs_list):
             
             
 
-a = MyClass(15, None, None, None)
-b = MyClass(4, None, None, None)
-c = a - b
-f = c*c
+a = Dense(4, 5)
 
-dfs_list = []
-dfs(f)
-f.grad = 1
-ComputeTopGrads(dfs_list)
-f.grad
+vec = []
+for i in range(4):
+    vec.append(MyClass(i*3, None, None, None))
+f = a(vec)
+for i in f:
+    print(i.value)
 
 ```
