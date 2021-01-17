@@ -53,10 +53,16 @@ class Dense(object):
     def __init__(self, size_in, size_out):
         self.size_in = size_in
         self.size_out = size_out
-        self.weights = np.array([[MyClass(random(), None, None, None) for j in range(m)] for i in range(n)])
+        self.weights = [[MyClass(random(), None, None, None) for j in range(self.size_in)] for i in range(self.size_out)]
         
     def __call__(self, vector):
-        output = self.weights.dot(vector)
+        arr = []
+        for i in self.weights:
+            s = 0
+            for j in range(self.size_in):
+                s += i[j] * vector[j]
+            arr.append(s)
+        return arr
 
 
 def dfs(x):
