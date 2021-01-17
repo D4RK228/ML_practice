@@ -53,7 +53,7 @@ class Dense(object):
     def __init__(self, size_in, size_out):
         self.size_in = size_in
         self.size_out = size_out
-        self.weights = np.random.sample((self.size_in, self.size_out))
+        self.weights = np.array([[MyClass(random(), None, None, None) for j in range(m)] for i in range(n)])
         
     def __call__(self, vector):
         output = self.weights.dot(vector)
