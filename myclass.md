@@ -11,7 +11,6 @@ class MyClass(object):
             
         
     def ComputeGrads(self):
-        
         if self.operation == "mul":
             self.grad1 = self.parent2.value
             self.grad2 = self.parent1.value
@@ -47,7 +46,18 @@ class MyClass(object):
 
     def __truediv__(self, other):
         value = self.value / other.value
-        return MyClass(value, self, other, "truediv")   
+        return MyClass(value, self, other, "truediv")
+    
+    
+class Dense(object):
+    def __init__(self, size_in, size_out):
+        self.size_in = size_in
+        self.size_out = size_out
+        self.weights = np.random.sample((self.size_in, self.size_out))
+        
+    def __call__(self, vector):
+        output = self.weights.dot(vector)
+
 
 def dfs(x):
     if x.parent1:
@@ -58,7 +68,7 @@ def dfs(x):
         dfs_list.append(x)
 
 def ComputeTopGrads(dfs_list):
-    dfs_list.reverse
+    dfs_list.reverse()
     for self in dfs_list:
         if self.operation == "mul":
             self.grad1 = self.parent2.value
@@ -75,6 +85,8 @@ def ComputeTopGrads(dfs_list):
         if self.parent1 != None and self.parent2 != None:
             self.parent2.grad += self.grad2 * self.grad
             self.parent1.grad += self.grad1 * self.grad 
+            
+            
 
 a = MyClass(15, None, None, None)
 b = MyClass(4, None, None, None)
@@ -85,5 +97,6 @@ dfs_list = []
 dfs(f)
 f.grad = 1
 ComputeTopGrads(dfs_list)
-a.grad
+f.grad
+
 ```
